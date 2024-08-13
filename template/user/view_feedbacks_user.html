@@ -1,0 +1,159 @@
+{% extends 'user/user_base.html' %}
+{% block content %}
+
+<style>
+  .breadcrumb-bg {
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #e0e0e0;
+  }
+  .breadcrumb-bg h2 {
+      font-size: 36px;
+      font-weight: 700;
+  }
+  .breadcrumbs-custom-path {
+      font-size: 14px;
+      color: #777;
+  }
+  .feedback-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 0;
+      background-color: #f9f9f9;
+  }
+  .feedback-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 80%;
+      margin-bottom: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+  }
+  .feedback-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  .feedback-content {
+      padding: 25px;
+  }
+  .feedback-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+  }
+  .doctor-profile {
+      display: flex;
+      align-items: center;
+  }
+  .doctor-profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 15px;
+  }
+  .feedback-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 15px;
+      text-transform: capitalize;
+  }
+  .feedback-text {
+      font-size: 17px;
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .feedback-rating {
+      font-size: 22px;
+      color: #ff9800;
+      margin-bottom: 20px;
+  }
+  .feedback-user {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+  }
+  .feedback-user img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+  }
+  .feedback-user-name {
+      font-size: 19px;
+      font-weight: 700;
+      color: rgb(84, 84, 84);
+      text-transform: capitalize;
+  }
+  .feedback-date {
+      font-size: 15px;
+      color: #777;
+      text-align: right;
+  }
+  .feedback-doctor {
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+      text-transform: capitalize;
+  }
+  .feedback-subtitle {
+      font-size: 15px;
+      font-weight: bold;
+      color: #777;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+  }
+</style>
+
+<div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+    <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+        <h2 class="title pt-5">View Feedbacks</h2>
+        <ul class="breadcrumbs-custom-path mt-3 text-center">
+            <li><a href="/user_home">Home</a></li>
+            <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> View Feedbacks</li>
+        </ul>
+    </div>
+</div>
+
+<section class="feedback-container">
+    {% for f in feedbacks %}
+    <div class="feedback-card">
+        <div class="feedback-content">
+            <div class="feedback-header">
+                <div class="doctor-profile">
+                    <img src="../static/media/{{ f.doctor_id.profile_picture }}" alt="Doctor Image">
+                    <div>
+                        <div class="feedback-subtitle">Feedback for</div>
+                        <div class="feedback-doctor">Dr. {{ f.doctor_id.name }}</div>
+                    </div>
+                </div>
+                <div class="feedback-date">{{ f.posted_date }}</div>
+            </div>
+            <div class="feedback-title">{{ f.title }}</div>
+            <div class="feedback-text">{{ f.feedback }}</div>
+            <div class="feedback-rating">
+                {% if f.rating %}
+                    {% for _ in "1"|rjust:f.rating %}
+                    ⭐
+                    {% endfor %}
+                {% else %}
+                    No Rating
+                {% endif %}
+            </div>
+            <div class="feedback-subtitle">Posted By</div>
+            <div class="feedback-user">
+                <img src="../static/media/{{ f.user_id.profile_picture }}" alt="User Image">
+                <div class="feedback-user-name">{{ f.user_id.name }}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

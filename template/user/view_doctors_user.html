@@ -1,0 +1,45 @@
+{% extends 'user/user_base.html' %}
+{% block content %}
+
+<div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+    <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+        <h2 class="title pt-5">View Doctors</h2>
+        <ul class="breadcrumbs-custom-path mt-3 text-center">
+          <li><a href="/user_home">Home</a></li>
+          <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> View Doctors</li>
+        </ul>
+    </div>
+</div>
+
+<section class="w3l-team">
+    <div class="team py-5">
+      <div class="container py-lg-5 py-md-4">
+        <div class="title-content text-center">
+          <h6 class="title-subhny text-center">Meet</h6>
+          <h3 class="title-w3l mb-sm-3 text-center">Our Popular Doctors</h3>
+        </div>
+        <div class="row team-row">
+            {% for d in doctors %}
+          <div class="col-lg-3 col-6 team-wrap mt-4 pt-lg-2">
+            <div class="team-info">
+              <div class="column position-relative img-circle">
+                <a href="#url"><img src="../static/media/{{d.profile_picture}}" alt="" class="img-fluid" /></a>
+              </div>
+              <div class="column-btm">
+                <h3 class="name-pos"><a href="#url">{{d.name}}
+                </a></h3>
+                <p>{{d.specialization}}</p>
+                <div class="social">
+                  <a href="#facebook" class="facebook"><span class="fa fa-facebook" aria-hidden="true"></span></a>
+                  <a href="#twitter" class="twitter"><span class="fa fa-twitter" aria-hidden="true"></span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

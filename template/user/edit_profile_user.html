@@ -1,0 +1,64 @@
+{% extends 'user/user_base.html' %}
+{% block content %}
+    <!--/breadcrumb-bg-->
+    <div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+        <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+            <h2 class="title pt-5">Edit Profile</h2>
+            <ul class="breadcrumbs-custom-path mt-3 text-center">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span>Edit Profile</li>
+            </ul>
+        </div>
+    </div>
+
+    <!--//breadcrumb-bg-->
+    <!-- banner bottom shape -->
+    <div class="position-relative">
+        <div class="shape overflow-hidden">
+            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+            </svg>
+        </div>
+    </div>
+    <!-- banner bottom shape -->
+    <section class="w3l-contact-2 py-5" id="contact">
+        <div class="container py-lg-5 py-md-4 py-2">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-10">
+                    <form method="post" class="signin-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-grids mb-3">
+                            <label for="w3lName">Name</label>
+                            <input type="text" name="name" value="{{user.name}}" id="w3lName" placeholder="Your Name*" class="contact-input form-control mb-3" required />
+
+                            <label for="w3lAddress">Address</label>
+                            <textarea name="address" id="w3lAddress" placeholder="Your Address*" class="contact-input form-control mb-3" required>{{user.address}}</textarea>
+
+                            <label for="w3lContact">Contact</label>
+                            <input type="number" name="contact" value="{{user.contact}}" id="w3lContact" placeholder="Your Contact*" class="contact-input form-control mb-3" required />
+
+                            <label for="w3lAge">Age</label>
+                            <input type="number" name="age" value="{{user.age}}" id="w3lAge" placeholder="Your Age*" class="contact-input form-control mb-3" required />
+
+    
+                            <label for="w3lProfilePicture">Profile Picture</label>
+                            <input type="file" name="profile_picture" id="w3lProfilePicture" class="contact-input form-control mb-3" required />
+                        </div>
+
+                        <div class="w3l-submit text-sm-center">
+                            <button type="submit" class="btn btn-style btn-info">Update</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if messages %}
+    {% for m in messages %}
+    <script>alert("{{m}}")</script>
+    {% endfor %}
+    {% endif %}
+
+{% endblock %}

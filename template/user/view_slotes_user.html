@@ -1,0 +1,205 @@
+{% extends 'user/user_base.html' %}
+{% block content %}
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    .card-container {
+        margin-top: 50px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-container {
+        width: 40%;
+        padding: 25px;
+        text-align: center;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .profile-img {
+        width: 150px; /* Increased size */
+        height: 250px; /* Increased height for vertical rectangle */
+        border-radius: 8px; /* Rectangle with rounded corners */
+        object-fit: cover;
+        border: 2px solid #dee2e6;
+    }
+
+    .card-content {
+        width: 60%; /* Adjusted width for better spacing */
+        padding: 15px;
+        
+    }
+
+    .card-title {
+        margin-bottom: 10px; /* Added margin */
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .card-content {
+    width: 80%; /* Increased width for more space */
+    padding: 15px;
+}
+
+.slot {
+    margin-bottom: 15px;
+    padding: 15px 250px 15px 250px ;
+    max-width: 100%; /* Set to 100% to fill the available space */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+     /* Ensures text alignment from left to right */
+}
+
+.slot-header {
+    font-weight: bold;
+    text-align: center; /* Center align text vertically */
+    font-size: 1.1em; /* Slightly larger font size */
+    color: #007bff; /* Changed color for emphasis */
+    writing-mode: horizontal-tb; /* Set text to display vertically from right to left */
+    transform: rotate(0deg); /* Rotate text to upright position */
+    transform-origin: left top; /* Adjust rotation origin */
+    height: 100%; /* Ensure the slot-header occupies full height of slot */
+    display: flex; /* Use flexbox for centering text */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .badge {
+        font-size: 0.85em;
+        padding: 0.4em 0.8em;
+        border-radius: 0.25em;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #fff;
+    }
+
+    /* .btn-outline-primary {
+        margin-left: 300px;
+
+    } */
+
+    .no-appointments {
+        text-align: center;
+        font-size: 1.2em;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+    <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+        <h2 class="title pt-5">View Slots</h2>
+        <ul class="breadcrumbs-custom-path mt-3 text-center">
+            <li><a href="/user_home">Home</a></li>
+            <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> View Slots</li>
+        </ul>
+    </div>
+</div>
+
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+
+<div class="container my-4">
+    <form method="GET" class="form-inline mb-4 justify-content-center">
+        <label for="date" class="mr-2">Filter by Date:</label>
+        <input type="date" id="date" name="date" class="form-control mr-2" value="{{ selected_date|default:'' }}">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <div class="card-container">
+        {% for doctor_slots in slotes %}
+        <div class="card">
+            <div style="display: flex;">
+            <div class="card-img-container">
+                <img src="../static/media/{{ doctor_slots.doctor.profile_picture }}" alt="Profile Picture" class="profile-img">
+                <div class="card-title">{{ doctor_slots.doctor.name }}</div>
+            </div>
+            <div class="card-content">
+                {% for slot in doctor_slots.slots %}
+                <div class="slot">
+                    <div class="slot-header">
+                        {{ slot.appointment_time_from }} - {{ slot.appointment_time_to }} on {{ slot.appointment_date }}
+                    </div>
+                    <div>
+                        <span class="badge 
+                            {% if slot.booked %}
+                                badge-success
+                            {% else %}
+                                badge-warning
+                            {% endif %}
+                        ">
+                            <i class="fa 
+                                {% if slot.booked %}
+                                    fa-check-circle
+                                {% else %}
+                                    fa-times-circle
+                                {% endif %}
+                            "></i>
+                            {% if slot.booked %}
+                                Booked
+                            {% else %}
+                                Not Booked
+                            {% endif %}
+                        </span>
+                        <a href="/payment_user?id={{ slot.id }}">
+                            <button type="button" class="btn btn-outline-primary btn-sm">Book</button>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        {% empty %}
+        <div class="no-appointments">
+            No appointments found for this date.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if messages %}
+    {% for m in messages %}
+    <script>alert("{{ m }}")</script>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

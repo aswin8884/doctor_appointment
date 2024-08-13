@@ -1,0 +1,126 @@
+{% extends 'user/user_base.html' %}
+{% block content %}
+<div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+    <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+        <h2 class="title pt-5">View Complaints</h2>
+        <ul class="breadcrumbs-custom-path mt-3 text-center">
+            <li><a href="/user_home">Home</a></li>
+            <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> View Complaints </li>
+        </ul>
+    </div>
+</div>
+<section class="contact-us" id="contact">
+    <div class="container" style="margin-top: 120px;">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="section-heading text-center">
+                    <!-- <h2 style="text-transform: capitalize; color: rgb(5, 4, 4); font-size: 30px;">
+                        View Complaints
+                    </h2> -->
+                </div>
+            </div>
+            <div class="col-lg-9">
+                {% for c in complaints %}
+                <div class="message-card">
+                    <div class="message-content">
+                        <div class="message-header">
+                            <img src="../static/media/{{ c.user_id.profile_picture }}" class="profile-picture" alt="Profile Picture">
+                            <p><strong>From:</strong> {{ c.user_id.name }}</p>
+                        </div>
+                        <p><strong>Title:</strong> {{ c.title }}</p>
+                        <p><strong>Message:</strong> {{ c.complaint }}</p>
+                        <p><strong>Sended On:</strong> {{ c.posted_date }}</p>
+                        {% if c.admin_reply == 'pending' %}
+                        <p><strong>Reply:</strong> <span class="pending-reply">Pending</span></p>
+                        {% else %}
+                        <div class="reply-content">
+                            <div class="reply-header">
+                                <p><strong>Reply From Admin:</strong></p>
+                            </div>
+                            <p>{{ c.admin_reply }}</p>
+                            <p><strong>Reply Recived On:</strong> {{ c.reply_date }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for m in messages %}
+    <script>alert("{{ m }}")</script>
+    {% endfor %}
+    {% endif %}
+</section>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    .message-card {
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+        padding: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Roboto', sans-serif;
+    }
+    .message-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    .message-content {
+        position: relative;
+        z-index: 2;
+    }
+    .message-header, .reply-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .profile-picture {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 2px solid #00796b; /* Optional: add a border */
+    }
+    .message-content p {
+        text-transform: capitalize;
+        margin: 0;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+    .message-content p strong {
+        text-transform: capitalize;
+        color: #00796b;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    .message-content p:hover strong {
+        color: #004d40;
+    }
+    .message-content p:hover {
+        color: #004d40;
+    }
+    .pending-reply {
+        background-color: rgba(248, 180, 8, 0.756); /* Light yellow background */
+        padding: 2px 4px; /* Add some padding */
+        border-radius: 4px; /* Round the corners */
+        color: #333; /* Ensure text is readable */
+    }
+    .reply-content {
+        background-color: #f1f8e9;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}

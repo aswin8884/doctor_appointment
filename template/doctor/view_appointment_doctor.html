@@ -1,0 +1,180 @@
+{% extends 'doctor/doctor_base.html' %}
+{% block content %}
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    .table-container {
+        margin-top: 50px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 15px;
+        width: 100%;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: #ffffff;
+        font-weight: bold;
+        border-top: none;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        padding: 12px;
+    }
+
+    .table td {
+        background-color: #ffffff;
+    }
+
+    .badge {
+        font-size: 0.9em;
+        padding: 0.5em 1em;
+        border-radius: 0.25em;
+        display: inline-block;
+        width: 200px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .badge i {
+        margin-right: 5px;
+    }
+
+    .form-inline {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="breadcrumb-bg py-5 w3l-inner-page-breadcrumb">
+    <div class="container pt-lg-5 pt-md-3 p-lg-4 pb-md-3 my-lg-3">
+        <h2 class="title pt-5">Add Appointment</h2>
+        <ul class="breadcrumbs-custom-path mt-3 text-center">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Add Appointment</li>
+        </ul>
+    </div>
+</div>
+
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+
+<div class="container my-4">
+    <form method="GET" class="form-inline mb-3">
+        <label for="date" class="mr-2">Filter by Date:</label>
+        <input type="date" id="date" name="date" class="form-control mr-2" value="{{ request.GET.date }}">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <div class="table-container">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Fees</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Date</th>
+                    <!-- <th>Booked</th> -->
+                    <th>Status</th>
+                    <th>Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in slotes %}
+                <tr>
+                    <td>{{ s.fees }}</td>
+                    <td>{{ s.appointment_time_from }}</td>
+                    <td>{{ s.appointment_time_to }}</td>
+                    <td>{{ s.appointment_date }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if s.user_booked == True %}
+                                badge-success
+                            {% else %}
+                                badge-warning
+                            {% endif %}
+                        ">
+                            <i class="fa 
+                                {% if s.user_booked == True %}
+                                    fa-check-circle
+                                {% else %}
+                                    fa-times-circle
+                                {% endif %}
+                            "></i>
+                            {% if s.user_booked == True %}
+                            Booked
+                            {% else %}
+                            Not Booked
+                            {% endif %}
+                        </span>
+                    </td>
+                
+                    <td>
+                        <span class="badge 
+                            {% if s.user_booked == True %}
+                                badge-success
+                            {% else %}
+                                badge-warning
+                            {% endif %}
+                        ">
+                            <i class="fa 
+                                {% if s.user_booked == True %}
+                                    fa-check-circle
+                                {% else %}
+                                    fa-times-circle
+                                {% endif %}
+                            "></i>
+                            {% if s.user_booked == True %}
+                                Recived
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </span>
+                    </td>
+                    
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No appointments found for this date.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if messages %}
+{% for m in messages %}
+<script>alert("{{m}}")</script>
+{% endfor %}
+{% endif %}
+
+
+{% endblock %}
